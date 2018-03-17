@@ -1,0 +1,21 @@
+{
+  "name": "crowdlearning",
+  "version": "3.0.0",
+  "description": "E-learning platform ",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "ExpressJS",
+    "AngularJs"
+  ],
+  "author": "Rahul Gopalsamy",
+  "license": "ISC"
+}
