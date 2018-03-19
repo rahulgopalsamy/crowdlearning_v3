@@ -2,8 +2,10 @@
 
 const
     express = require('express'),
-    path = require('path'),
-    bodyparser = require('body-parser');
+    bodyparser = require('body-parser'),
+    session = require('express-session'),
+    MongoStore = require('connect-mongo')(session),
+    mongoose = require('mongoose');
 
 module.exports = function(){
     let server = express(),
@@ -18,14 +20,30 @@ module.exports = function(){
         server.set('port', config.port);
         server.set('hostname', config.hostname);
         server.set('viewDir', config.viewDir)
+        //Establishing database conncetion
+        mongoose.connect(config.mongo)
 
         // middleware for parsing json
         server.use(bodyparser.json());
-
+        // session middleware (persistent storage)
+        server.use(session({
+            store : new MongoStore ({
+                url : config.sessionSetting.store.url,
+                ttl: config.sessionSetting.store.ttl
+            }),
+            secret: config.sessionSetting.secret,
+            saveUninitalized: config.sessionSetting.saveUninitalized,
+            resave: config.sessionSetting.resave,
+            cookie: config.sessionSetting.cookie,
+            name: config.sessionSetting.name
+        }));
         //setting View engine & View Directory
         server.set('views', server.get('viewDir'));
         server.set('view engine', 'ejs');
         server.use(express.static(config.public_path));
+
+        //Intialising authentication
+
 
         //initalising routes
         routes.init(server);

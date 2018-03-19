@@ -1,4 +1,7 @@
-
+const
+    appRoute = require('./app'),
+    studentRoute = require('./app/student'),
+    instructorRoute = require('./app/instructor');
 
 
 function init(server){
@@ -8,11 +11,15 @@ function init(server){
     });
 
     server.get('/', function(req, res){
-        res.render('index');
+        res.render('pages/index');
     });
+
+    server.use('/user', appRoute);
+    server.use('/student', studentRoute);
+    server.use('/instructor', instructorRoute);
 
 }
 
 module.exports = {
     init: init
-}
+};

@@ -1,12 +1,11 @@
 'use strict';
 
-const
-    express = require('express');
+const express = require('express');
 
 let router = express.Router();
 
-router.get('/home', function(req, res){
-    res.send("Hello!");
+router.get('/', function(req, res){
+    res.render('pages/login');
 });
 
-module.export = router;
+module.exports = router;
