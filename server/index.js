@@ -5,7 +5,9 @@ const
     bodyparser = require('body-parser'),
     session = require('express-session'),
     MongoStore = require('connect-mongo')(session),
+    passport = require('passport'),
     mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 module.exports = function(){
     let server = express(),
@@ -22,9 +24,11 @@ module.exports = function(){
         server.set('viewDir', config.viewDir)
         //Establishing database conncetion
         mongoose.connect(config.mongo)
-
+        require('../configs/passport')(passport);
         // middleware for parsing json
         server.use(bodyparser.json());
+        server.use(bodyparser.urlencoded({ extended: false }));
+
         // session middleware (persistent storage)
         server.use(session({
             store : new MongoStore ({
@@ -42,8 +46,10 @@ module.exports = function(){
         server.set('view engine', 'ejs');
         server.use(express.static(config.public_path));
 
-        //Intialising authentication
 
+        //Intialising authentication
+        server.use(passport.initialize());
+        server.use(passport.session());
 
         //initalising routes
         routes.init(server);

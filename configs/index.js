@@ -1,5 +1,7 @@
 'use strict';
-    let session = require('./session_settings');
+
+let session = require('./session_settings');
+
 const config = {
     env: 'local',
     port: '3000',
